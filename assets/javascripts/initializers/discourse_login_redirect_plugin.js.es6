@@ -9,7 +9,7 @@ export default {
   name: "discourse_login_redirect_plugin",
   initialize: function(container, application) {
 
-    if(!Discourse.SiteSettings.d_environment_production){
+    if(Discourse.SiteSettings.d_environment_production){
         Discourse.DLoginPath = Discourse.SiteSettings.d_production_login_redirect_url;
         Discourse.DLogoutPath = Discourse.SiteSettings.d_production_logout_redirect_url;
         Discourse.DCreateAccountPath = Discourse.SiteSettings.d_production_new_account_redirect_url;
@@ -20,8 +20,6 @@ export default {
         Discourse.DCreateAccountPath =  Discourse.SiteSettings.d_development_new_account_redirect_url;
     }
 
-    //Check if plugin is active
-    if (Discourse.SiteSettings.d_login_redirect_active){
       //Override login functionality with redirect
       ApplicationRoute.reopen({
         actions: {
@@ -30,7 +28,7 @@ export default {
                   bootbox.alert(I18n.t("read_only_mode.login_disabled"));
                 } else {
 
-                  if (Discourse.DLoginPath.length === 0) {
+                  if ((Discourse.DLoginPath.length === 0) && !Discourse.SiteSettings.d_login_redirect_active) {
                     this.handleShowLogin();
                   }else{
                     window.location.replace(Discourse.DLoginPath);
@@ -41,7 +39,7 @@ export default {
                if (this.site.get("isReadOnly")) {
                  bootbox.alert(I18n.t("read_only_mode.login_disabled"));
                } else {
-                 if (Discourse.DCreateAccountPath.length === 0) {
+                 if ((Discourse.DCreateAccountPath.length === 0) && !Discourse.SiteSettings.d_login_redirect_active) {
                    this.handleShowLogin();
                  }else{
                    window.location.replace(Discourse.DCreateAccountPath);
@@ -51,8 +49,11 @@ export default {
           }
       });
 
-      //Override custom and default logout redirect
-      Discourse.SiteSettings.logout_redirect = Discourse.DLogoutPath;
-    }
+
+      if(Discourse.SiteSettings.d_login_redirect_active){
+         //Override custom and default logout redirect
+         Discourse.SiteSettings.logout_redirect = Discourse.DLogoutPath;
+      }
+
   }
 };
