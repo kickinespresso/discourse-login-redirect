@@ -1,0 +1,10 @@
+en:
+  site_settings:
+    d_active: 'turn plugin on/off'
+    d_environment_production: 'Production Environment? Check for Production'
+    d_production_login_redirect_url: 'Production: override default path. leave blank for the default'
+    d_production_logout_redirect_url: 'Production: override default path. leave blank for the default '
+    d_production_new_account_redirect_url: 'Production: override default path. leave blank for the default'
+    d_development_login_redirect_url: 'Development: override default path. leave blank for the default'
+    d_development_logout_redirect_url: 'Development: override default path. leave blank for the default'
+    d_development_new_account_redirect_url: 'Development: override default path. leave blank for the default'

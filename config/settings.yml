@@ -1,0 +1,25 @@
+discourse_login_redirect_plugin:
+  d_production_login_redirect_url:
+    default: ""
+    client: true
+  d_production_logout_redirect_url:
+    default: ""
+    client: true
+  d_production_new_account_redirect_url:
+    default: ""
+    client: true
+  d_development_login_redirect_url:
+    default: ""
+    client: true
+  d_development_logout_redirect_url:
+    default: ""
+    client: true
+  d_development_new_account_redirect_url:
+    default: ""
+    client: true
+  d_environment_production:
+    default: false
+    client: false
+  d_active:
+    default: false
+    client: false

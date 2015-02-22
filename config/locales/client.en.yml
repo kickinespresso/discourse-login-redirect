@@ -1,0 +1,6 @@
+en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_login_redirect_plugin: 'Login Redirect'
