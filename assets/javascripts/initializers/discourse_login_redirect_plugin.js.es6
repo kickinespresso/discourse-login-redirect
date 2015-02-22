@@ -21,7 +21,7 @@ export default {
     }
 
     //Check if plugin is active
-    if (Discourse.SiteSettings.login_redirect_active){
+    if (Discourse.SiteSettings.d_login_redirect_active){
       //Override login functionality with redirect
       ApplicationRoute.reopen({
         actions: {

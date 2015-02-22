@@ -20,6 +20,6 @@ discourse_login_redirect_plugin:
   d_environment_production:
     default: false
     client: false
-  d_active:
+  d_login_redirect_active:
     default: false
     client: false
