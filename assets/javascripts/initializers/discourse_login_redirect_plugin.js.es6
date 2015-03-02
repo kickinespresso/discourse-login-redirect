@@ -2,7 +2,6 @@
   Apply discourse_login_redirect_plugin when the app boots
 **/
 
-import { decorateCooked } from 'discourse/lib/plugin-api';
 import ApplicationRoute from 'discourse/routes/application';
 
 export default {
@@ -28,10 +27,12 @@ export default {
                   bootbox.alert(I18n.t("read_only_mode.login_disabled"));
                 } else {
 
-                  if ((Discourse.DLoginPath.length === 0) && !Discourse.SiteSettings.d_login_redirect_active) {
+                  if (Discourse.DLoginPath.length === 0) {
                     this.handleShowLogin();
                   }else{
-                    window.location.replace(Discourse.DLoginPath);
+
+                    var login_redirect_path = Discourse.DLoginPath + "?dialog=" +  JSON.stringify({ Name: "Login", Arguments: { Redirect: window.location.protocol + "//" + window.location.hostname } });
+                    window.location.replace(login_redirect_path);
                   }
                 }
             },
@@ -39,8 +40,9 @@ export default {
                if (this.site.get("isReadOnly")) {
                  bootbox.alert(I18n.t("read_only_mode.login_disabled"));
                } else {
-                 if ((Discourse.DCreateAccountPath.length === 0) && !Discourse.SiteSettings.d_login_redirect_active) {
-                   this.handleShowLogin();
+                 if (Discourse.DCreateAccountPath.length === 0)  {
+                   console.log("here");
+                   this.handleShowCreateAccount();
                  }else{
                    window.location.replace(Discourse.DCreateAccountPath);
                  }
@@ -50,10 +52,28 @@ export default {
       });
 
 
-      if(Discourse.SiteSettings.d_login_redirect_active){
-         //Override custom and default logout redirect
-         Discourse.SiteSettings.logout_redirect = Discourse.DLogoutPath;
-      }
+
+      Discourse.logout = function (){
+        Discourse.User.logout().then(function (){
+          // Reloading will refresh unbound properties
+            Discourse.KeyValueStore.abandonLocal();
+            //Override custom and default logout redirect
+
+            if(Discourse.DLogoutPath.length === 0 ){
+              var redirect = Discourse.SiteSettings.logout_redirect;
+            }else{
+              document.cookie = '_t=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+              var redirect = Discourse.DLogoutPath;
+            }
+
+            if(redirect.length === 0){
+              window.location.pathname = Discourse.getURL('/');
+            } else {
+              window.location.href = redirect;
+            }
+        });
+      };
+
 
   }
 };
